@@ -11,6 +11,12 @@ view: covid_demo {
   dimension: country {
     type: string
     map_layer_name: countries
+    drill_fields: [region]
+    link: {
+      label: "Country Drill Down"
+      url: "/dashboards/covid::world?Region=&Country=United%20Kingdom"
+      icon_url: "http://www.google.com/s2/favicons?domain=www.looker.com"
+    }
   }
 
   dimension: region {
