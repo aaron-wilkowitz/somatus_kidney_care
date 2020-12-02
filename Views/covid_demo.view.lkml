@@ -42,10 +42,21 @@ view: covid_demo {
   measure: count_posts {
     type: sum
     sql: ${TABLE}.posts ;;
+    drill_fields: [drill*]
   }
 
   measure: count_cases {
     type: sum
     sql: ${TABLE}.cases ;;
+    drill_fields: [drill*]
+  }
+
+  set: drill {
+    fields: [
+      country,
+      region,
+      count_posts,
+      count_cases
+    ]
   }
 }
