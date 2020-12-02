@@ -11,7 +11,7 @@ view: covid_demo {
   dimension: country {
     type: string
     map_layer_name: countries
-    drill_fields: [region]
+    drill_fields: [region, postal_code, city, date]
     link: {
       label: "Country Drill Down"
       url: "/dashboards/covid::world?Region=&Country=United%20Kingdom"
@@ -43,12 +43,22 @@ view: covid_demo {
     type: sum
     sql: ${TABLE}.posts ;;
     drill_fields: [drill*]
+    link: {
+      label: "Go to source data (Johns Hopkins)"
+      url: "https://coronavirus.jhu.edu/map.html"
+      icon_url: "http://www.google.com/s2/favicons?domain=www.jhu.edu"
+    }
   }
 
   measure: count_cases {
     type: sum
     sql: ${TABLE}.cases ;;
     drill_fields: [drill*]
+    link: {
+      label: "Go to source data (Johns Hopkins)"
+      url: "https://coronavirus.jhu.edu/map.html"
+      icon_url: "http://www.google.com/s2/favicons?domain=www.jhu.edu"
+    }
   }
 
   set: drill {
