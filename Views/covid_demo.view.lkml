@@ -1,10 +1,10 @@
 view: covid_demo {
   derived_table: {
     sql:
-                SELECT 'United Kingdom' as country, 'Scotland' as region, 103921 as posts
-      UNION ALL SELECT 'United Kingdom' as country, 'Northern Ireland' as region, 82390 as posts
-      UNION ALL SELECT 'United Kingdom' as country, 'England' as region, 81390 as posts
-      UNION ALL SELECT 'United Kingdom' as country, 'Wales' as region, 39208 as posts
+                SELECT 'United Kingdom' as country, 'Scotland' as region, 18000 as posts, 400 as cases
+      UNION ALL SELECT 'United Kingdom' as country, 'Northern Ireland' as region, 30000 as posts, 300 as cases
+      UNION ALL SELECT 'United Kingdom' as country, 'England' as region, 80000 as posts, 10921 as cases
+      UNION ALL SELECT 'United Kingdom' as country, 'Wales' as region, 500 as posts, 850 as cases
     ;;
   }
 
@@ -21,11 +21,31 @@ view: covid_demo {
 
   dimension: region {
     type: string
-    map_layer_name: countries
+    drill_fields: [postal_code, city, date]
+  }
+
+  dimension: postal_code {
+    type: string
+    sql: 'Example' ;;
+  }
+
+  dimension: city {
+    type: string
+    sql: 'Example' ;;
+  }
+
+  dimension: date {
+    type: string
+    sql: 'Example' ;;
   }
 
   measure: count_posts {
     type: sum
     sql: ${TABLE}.posts ;;
+  }
+
+  measure: count_cases {
+    type: sum
+    sql: ${TABLE}.cases ;;
   }
 }
