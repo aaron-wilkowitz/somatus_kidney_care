@@ -23,6 +23,7 @@ view: medicare_inpatient {
   dimension: year {
     type: number
     sql: ${TABLE}.year ;;
+    value_format_name: id
   }
 
   dimension: average_covered_charges {
@@ -143,7 +144,7 @@ view: medicare_inpatient {
     group_label: "Cost Claims"
     type: sum
     sql: ${average_total_payments} ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: total_cost_kidney_claims {
@@ -151,7 +152,7 @@ view: medicare_inpatient {
     type: sum
     sql: ${average_total_payments} ;;
     filters: [is_kidney_care: "Yes"]
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: percent_cost_kidney_claims {
@@ -167,14 +168,14 @@ view: medicare_inpatient {
     group_label: "Cost per Patient"
     type: number
     sql: ${total_cost_claims} / nullif(${total_claims},0) ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: total_cost_per_kidney_patient {
     group_label: "Cost per Patient"
     type: number
     sql: ${total_cost_kidney_claims} / nullif(${total_kidney_claims},0) ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
 ## % Reimbursed
@@ -184,13 +185,35 @@ view: medicare_inpatient {
     type: sum
     sql: ${average_medicare_payments} ;;
     filters: [is_kidney_care: "Yes"]
-    value_format_name: usd
+    value_format_name: usd_0
+  }
+
+  measure: total_not_reimbursed_kidney_claims {
+    group_label: "% Reimbursed"
+    type: number
+    sql: ${total_cost_kidney_claims} - ${total_reimbursed_kidney_claims} ;;
+    value_format_name: usd_0
+    html: <font color="red">{{ rendered_value }}</font> ;;
+  }
+
+  measure: total_not_reimbursed_kidney_claims_per_patient {
+    group_label: "% Reimbursed"
+    type: number
+    sql: ${total_not_reimbursed_kidney_claims} / nullif(${total_kidney_claims},0) ;;
+    value_format_name: usd_0
   }
 
   measure: percent_reimbursed_kidney_claims {
     group_label: "% Reimbursed"
     type: number
     sql: ${total_reimbursed_kidney_claims} / nullif(${total_cost_kidney_claims},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: percent_not_reimbursed_kidney_claims {
+    group_label: "% Reimbursed"
+    type: number
+    sql: 1 - ${percent_reimbursed_kidney_claims};;
     value_format_name: percent_1
   }
 

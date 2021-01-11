@@ -7,9 +7,11 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 explore: medicare_inpatient {
   join: zipcode_census {
     relationship: many_to_one
-    sql_on: ${medicare_inpatient.provider_zipcode} = ${zipcode_census.geo_id} ;;
+    sql_on: right('000' || cast(${medicare_inpatient.provider_zipcode} as string),5) = ${zipcode_census.geo_id} ;;
   }
 }
+
+explore: zipcode_census {}
 
 ### PDT Timeframes
 

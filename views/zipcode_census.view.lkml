@@ -1,6 +1,15 @@
 view: zipcode_census {
-  sql_table_name: `bigquery-public-data.census_bureau_acs.zip_codes_2018_5yr`
+  derived_table: {
+    datagroup_trigger: once_monthly
+    sql:
+      SELECT a.*, left(b.state_code,2) as state_code, b.state_name
+      FROM `bigquery-public-data.census_bureau_acs.zip_codes_2018_5yr` a
+      LEFT JOIN `bigquery-public-data.utility_us.zipcode_area` b
+        ON a.geo_id = b.zipcode
     ;;
+
+  }
+  # sql_table_name: `bigquery-public-data.census_bureau_acs.zip_codes_2018_5yr` ;;
 
 #################
 ### Derived Dimensions
@@ -91,6 +100,18 @@ view: zipcode_census {
     group_label: "Z"
     type: string
     sql: ${geo_id} ;;
+  }
+
+  dimension: geo_id {
+    type: zipcode
+    map_layer_name: us_zipcode_tabulation_areas
+    sql: ${TABLE}.geo_id ;;
+  }
+
+  dimension: state_code {
+    type: zipcode
+    map_layer_name: us_states
+    sql: ${TABLE}.state_code ;;
   }
 
   dimension: aggregate_travel_time_to_work {
@@ -623,13 +644,6 @@ view: zipcode_census {
     group_label: "Z"
     type: number
     sql: ${TABLE}.four_more_cars ;;
-  }
-
-  dimension: geo_id {
-    group_label: "Z"
-    type: zipcode
-    map_layer_name: us_zipcode_tabulation_areas
-    sql: ${TABLE}.geo_id ;;
   }
 
   dimension: gini_index {
