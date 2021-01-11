@@ -1,22 +1,29 @@
 connection: "lookerdata"
 
-include: "/Views/*.view.lkml"                # include all views in the views/ folder in this project
+include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
-explore: covid_demo {}
+explore: medicare_inpatient {}
 
-# # Select the views that should be a part of this model,
-# # and define the joins that connect them together.
-#
-# explore: order_items {
-#   join: orders {
-#     relationship: many_to_one
-#     sql_on: ${orders.id} = ${order_items.order_id} ;;
-#   }
-#
-#   join: users {
-#     relationship: many_to_one
-#     sql_on: ${users.id} = ${orders.user_id} ;;
-#   }
-# }
+### PDT Timeframes
+
+datagroup: once_daily {
+  max_cache_age: "24 hours"
+  sql_trigger: SELECT current_date() ;;
+}
+
+datagroup: once_weekly {
+  max_cache_age: "168 hours"
+  sql_trigger: SELECT extract(week from current_date()) ;;
+}
+
+datagroup: once_monthly {
+  max_cache_age: "720 hours"
+  sql_trigger: SELECT extract(month from current_date()) ;;
+}
+
+datagroup: once_yearly {
+  max_cache_age: "9000 hours"
+  sql_trigger: SELECT extract(year from current_date()) ;;
+}
