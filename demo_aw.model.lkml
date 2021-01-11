@@ -4,7 +4,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
-explore: medicare_inpatient {}
+explore: medicare_inpatient {
+  join: zipcode_census {
+    relationship: many_to_one
+    sql_on: ${medicare_inpatient.provider_zipcode} = ${zipcode_census.geo_id} ;;
+  }
+}
 
 ### PDT Timeframes
 

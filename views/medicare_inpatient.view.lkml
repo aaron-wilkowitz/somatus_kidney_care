@@ -14,6 +14,7 @@ view: medicare_inpatient {
 ##################
 
   dimension: pk {
+    primary_key: yes
     group_label: "Z"
     type: string
     sql: ${year} || '|' || ${provider_id} || '|' || ${drg_definition} ;;
