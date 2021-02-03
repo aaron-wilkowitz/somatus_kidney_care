@@ -13,6 +13,23 @@ explore: medicare_inpatient {
 
 explore: zipcode_census {}
 
+explore: kpis_by_date {
+  join: customer_lifetime_orders_manual {
+    relationship: many_to_one
+    sql_on: ${kpis_by_date.customer_id} = ${customer_lifetime_orders_manual.customer_id} ;;
+  }
+
+  join: customer_lifetime_orders_native_derived_table {
+    relationship: many_to_one
+    sql_on: ${kpis_by_date.customer_id} = ${customer_lifetime_orders_native_derived_table.customer_id} ;;
+  }
+}
+
+explore: customer_lifetime_orders_native_derived_table {}
+
+# explore: columns_100 {}
+explore: columns_50 {}
+
 ### PDT Timeframes
 
 datagroup: once_daily {
