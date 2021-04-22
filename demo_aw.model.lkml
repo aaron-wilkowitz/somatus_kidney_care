@@ -4,6 +4,8 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
+explore: nps {}
+
 explore: medicare_inpatient {
   join: zipcode_census {
     relationship: many_to_one
